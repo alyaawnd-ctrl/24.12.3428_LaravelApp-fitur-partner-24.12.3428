@@ -7,7 +7,8 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\PartnerController;
-
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\Admin\TransactionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes - AmikomEventHub (UTS Terpadu)
@@ -19,8 +20,12 @@ use App\Http\Controllers\Admin\PartnerController;
 // ==========================================
 Route::get('/', [EventController::class, 'index'])->name('home');
 Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
-Route::get('/checkout/{id}', [EventController::class, 'checkout'])->name('checkout');
+// Route::get('/checkout/{id}', [EventController::class, 'checkout'])->name('checkout');
 Route::get('/ticket/{id}', [EventController::class, 'ticket'])->name('ticket');
+
+// Rute Checkout Pelanggan
+Route::get('/checkout/{event}', [CheckoutController::class, 'create'])->name('checkout.create');
+Route::post('/checkout/{event}', [CheckoutController::class, 'store'])->name('checkout.store');
 
 // Rute Halaman Tentang Kami (Penyelenggara)
 Route::get('/tentang', function () {
@@ -51,6 +56,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('events', AdminEventController::class);
         Route::resource('categories', CategoryController::class)->except(['create', 'show', 'edit']);
         Route::resource('partners', PartnerController::class);
+        Route::get('transactions', [TransactionController::class, 'index'])->name('transactions.index');
     });
 
 });

@@ -26,6 +26,9 @@
             <a href="{{ route('admin.events.index') }}" class="flex items-center gap-3 px-4 py-3 {{ Request::is('admin/events*') ? 'bg-indigo-800 text-white' : 'hover:bg-indigo-800 text-indigo-300 hover:text-white' }} rounded-xl font-bold transition">
                 Kelola Event
             </a>
+            <a href="{{ route('admin.transactions.index') }}" class="flex items-center gap-3 px-4 py-3 {{ Request::is('admin/transactions*') ? 'bg-indigo-800 text-white' : 'hover:bg-indigo-800 text-indigo-300 hover:text-white' }} rounded-xl font-bold transition">
+                Transaksi
+            </a>
             
             <a href="{{ route('admin.categories.index') }}" class="flex items-center gap-3 px-4 py-3 {{ Request::is('admin/categories*') ? 'bg-indigo-800 text-white' : 'hover:bg-indigo-800 text-indigo-300 hover:text-white' }} rounded-xl font-bold transition">
                 Kelola Kategori

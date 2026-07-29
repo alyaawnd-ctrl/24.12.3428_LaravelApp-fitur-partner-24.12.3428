@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Event;
 use App\Models\Category;
-use App\Models\Partner; // Tambahkan import Model Partner
+use App\Models\Partner;
 
 class EventController extends Controller
 {
@@ -47,10 +47,18 @@ class EventController extends Controller
         return view('checkout', compact('event'));
     }
 
-    public function ticket($id)
+    public function ticket(Request $request, $id)
     {
         $event = Event::findOrFail($id);
         $orderId = 'TRX-' . rand(10000, 99999);
-        return view('ticket', compact('event', 'orderId'));
+
+        // Objek transaksi dummy untuk data di tiket
+        $transaction = (object) [
+            'customer_name' => $request->input('name', 'John Doe'),
+            'order_id'      => $orderId,
+            'ticket_code'   => 'TKT-' . rand(100000, 999999)
+        ];
+
+        return view('ticket', compact('event', 'orderId', 'transaction'));
     }
 }
