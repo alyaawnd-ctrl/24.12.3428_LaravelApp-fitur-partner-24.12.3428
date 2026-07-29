@@ -55,7 +55,6 @@
                 <tr class="hover:bg-slate-50/50 transition duration-200 group">
                     <td class="px-6 py-6 font-bold text-slate-400 text-center">{{ $index + 1 }}</td>
                     <td class="px-6 py-6">
-                        <!-- Menampilkan Poster (Jika ada poster_path di database, gunakan itu. Jika tidak, gunakan default berdasarkan kategori seperti di halaman depan) -->
                         @php
                             $catName = strtolower($event->category->name ?? '');
                             if (str_contains($catName, 'teknologi') || str_contains($catName, 'coding')) {
@@ -65,9 +64,11 @@
                             } else {
                                 $defaultImg = asset('assets/concert.png');
                             }
-                            $imgSrc = $event->poster_path ? asset($event->poster_path) : $defaultImg;
+                            $imgSrc = ($event->poster_path && \Illuminate\Support\Facades\Storage::disk('public')->exists($event->poster_path))
+                                ? asset('storage/' . $event->poster_path)
+                                : $defaultImg;
                         @endphp
-                        <img src="{{ $imgSrc }}" class="w-14 h-14 rounded-xl object-cover shadow-sm border border-slate-100" alt="Poster">
+                        <img src="{{ $imgSrc }}" class="w-14 h-14 rounded-xl object-cover shadow-sm border border-slate-100" alt="{{ $event->title }}">
                     </td>
                     <td class="px-6 py-6">
                         <p class="font-black text-slate-800 text-base mb-1">{{ $event->title }}</p>

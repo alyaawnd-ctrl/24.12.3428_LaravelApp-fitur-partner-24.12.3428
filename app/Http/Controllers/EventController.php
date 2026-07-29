@@ -35,10 +35,10 @@ class EventController extends Controller
         return view('welcome', compact('events', 'categories', 'partners'));
     }
 
-    public function show($id)
+    public function show(Event $event)
     {
-        $event = Event::with('category')->findOrFail($id);
-        return view('event-detail', compact('event'));
+        $categories = Category::all();
+        return view('event-detail', compact('categories', 'event'));
     }
 
     public function checkout($id)

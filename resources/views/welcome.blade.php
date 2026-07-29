@@ -73,7 +73,9 @@
                     }
                     
                     
-                    $imgSrc = $event->poster_path ? asset($event->poster_path) : $defaultImg;
+                    $imgSrc = ($event->poster_path && \Illuminate\Support\Facades\Storage::disk('public')->exists($event->poster_path))
+                        ? asset('storage/' . $event->poster_path)
+                        : $defaultImg;
                 @endphp
                 
                 <div class="group bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col h-full">

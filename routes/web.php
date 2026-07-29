@@ -18,7 +18,7 @@ use App\Http\Controllers\Admin\PartnerController;
 // RUTE USER / PENGUNJUNG UMUM (FRONTEND)
 // ==========================================
 Route::get('/', [EventController::class, 'index'])->name('home');
-Route::get('/event/{id}', [EventController::class, 'show'])->name('events.show');
+Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
 Route::get('/checkout/{id}', [EventController::class, 'checkout'])->name('checkout');
 Route::get('/ticket/{id}', [EventController::class, 'ticket'])->name('ticket');
 
