@@ -26,6 +26,8 @@ Route::get('/ticket/{id}', [EventController::class, 'ticket'])->name('ticket');
 // Rute Checkout Pelanggan
 Route::get('/checkout/{event}', [CheckoutController::class, 'create'])->name('checkout.create');
 Route::post('/checkout/{event}', [CheckoutController::class, 'store'])->name('checkout.store');
+Route::get('/payment/{order_id}', [CheckoutController::class, 'payment'])->name('checkout.payment');
+Route::get('/success/{order_id}', [CheckoutController::class, 'success'])->name('checkout.success');
 
 // Rute Halaman Tentang Kami (Penyelenggara)
 Route::get('/tentang', function () {
