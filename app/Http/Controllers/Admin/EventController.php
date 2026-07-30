@@ -15,7 +15,12 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = Event::with('category')->latest()->paginate(10);
+        $user = \Illuminate\Support\Facades\Auth::user();
+        if ($user->role === 'organizer') {
+            $events = Event::with('category')->where('organizer_id', $user->id)->latest()->get();
+        } else {
+            $events = Event::with('category')->latest()->get();
+        }
         return view('admin.events.index', compact('events'));
     }
 
@@ -49,6 +54,9 @@ class EventController extends Controller
             // Simpan ke direktori storage/app/public/posters
             $data['poster_path'] = $request->file('poster')->store('posters', 'public');
         }
+
+        // Set organizer_id to the currently logged-in user
+        $data['organizer_id'] = \Illuminate\Support\Facades\Auth::id();
 
         // Menyimpan data yang telah divalidasi ke dalam tabel menggunakan Model
         Event::create($data);

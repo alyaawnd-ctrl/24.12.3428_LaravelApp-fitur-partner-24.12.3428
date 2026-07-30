@@ -9,7 +9,17 @@ class TransactionController extends Controller
 {
     public function index()
     {
-        $transactions = Transaction::with('event')->latest()->paginate(20);
+        $user = \Illuminate\Support\Facades\Auth::user();
+        
+        $query = Transaction::with('event')->latest();
+        
+        if ($user->role === 'organizer') {
+            $query->whereHas('event', function($q) use ($user) {
+                $q->where('organizer_id', $user->id);
+            });
+        }
+        
+        $transactions = $query->paginate(20);
         return view('admin.transactions.index', compact('transactions'));
     }
 }

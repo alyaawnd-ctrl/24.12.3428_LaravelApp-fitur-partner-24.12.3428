@@ -16,8 +16,11 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->enum('role', ['admin', 'user'])->default('user'); // Tambahan Role Enum
+            $table->string('password')->nullable(); // make nullable for google sso
+            $table->enum('role', ['superadmin', 'organizer', 'user'])->default('user'); // Tambahan Role Enum
+            $table->string('google_id')->nullable();
+            $table->string('google_token')->nullable();
+            $table->string('google_refresh_token')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\PartnerController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\Admin\TransactionController;
+use App\Http\Controllers\Auth\GoogleController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes - AmikomEventHub (UTS Terpadu)
@@ -23,11 +24,19 @@ Route::get('/events/{event}', [EventController::class, 'show'])->name('events.sh
 // Route::get('/checkout/{id}', [EventController::class, 'checkout'])->name('checkout');
 Route::get('/ticket/{id}', [EventController::class, 'ticket'])->name('ticket');
 
+// Rute Login SSO Google
+Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('google.login');
+Route::get('/auth/google/callback', [GoogleController::class, 'callback'])->name('google.callback');
+
 // Rute Checkout Pelanggan
 Route::get('/checkout/{event}', [CheckoutController::class, 'create'])->name('checkout.create');
 Route::post('/checkout/{event}', [CheckoutController::class, 'store'])->name('checkout.store');
 Route::get('/payment/{order_id}', [CheckoutController::class, 'payment'])->name('checkout.payment');
-Route::get('/success/{order_id}', [CheckoutController::class, 'success'])->name('checkout.success');
+Route::get('/checkout/success/{order_id}', [CheckoutController::class, 'success'])->name('checkout.success');
+
+Route::middleware('auth')->group(function () {
+    Route::post('/reviews', [\App\Http\Controllers\ReviewController::class, 'store'])->name('reviews.store');
+});
 
 // Webhook Midtrans
 Route::post('/midtrans/callback', [\App\Http\Controllers\MidtransWebhookController::class, 'handle']);

@@ -38,7 +38,8 @@ class EventController extends Controller
     public function show(Event $event)
     {
         $categories = Category::all();
-        return view('event-detail', compact('categories', 'event'));
+        $reviews = $event->reviews()->with('user')->latest()->get();
+        return view('event-detail', compact('categories', 'event', 'reviews'));
     }
 
     public function checkout($id)

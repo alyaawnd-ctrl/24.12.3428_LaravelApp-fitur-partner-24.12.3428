@@ -22,7 +22,20 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'google_id',
+        'google_token',
+        'google_refresh_token',
     ];
+
+    public function organizedEvents()
+    {
+        return $this->hasMany(Event::class, 'organizer_id');
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 
     /**
      * The attributes that should be hidden for serialization.

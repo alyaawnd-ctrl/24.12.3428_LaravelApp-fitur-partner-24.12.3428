@@ -11,12 +11,20 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // 1. Akun Admin Utama
-        User::create([
-            'name' => 'Admin Amikom',
+        // 1. Akun Superadmin
+        $superadmin = User::create([
+            'name' => 'Superadmin Amikom',
             'email' => 'admin@amikom.ac.id',
             'password' => bcrypt('password'),
-            'role' => 'admin',
+            'role' => 'superadmin',
+        ]);
+
+        // 1b. Akun Organizer
+        $organizer = User::create([
+            'name' => 'BEM Amikom',
+            'email' => 'bem@amikom.ac.id',
+            'password' => bcrypt('password'),
+            'role' => 'organizer',
         ]);
 
         // 2. Insert 3 Kategori (Syarat Latihan 4.5)
@@ -27,6 +35,7 @@ class DatabaseSeeder extends Seeder
         // 3. Insert 6 Sampel Events (Syarat Latihan 4.5)
         // Event 1 (Sesuai Template)
         Event::create([
+            'organizer_id' => $organizer->id,
             'category_id' => $catMusik->id,
             'title' => 'Jazz Night 2024: A Celebration',
             'description' => 'Nikmati malam yang indah dengan alunan musik Jazz dari musisi internasional. Acara ini juga dilengkapi dengan food stall premium.',
@@ -39,6 +48,7 @@ class DatabaseSeeder extends Seeder
 
         // Event 2 (Sesuai Template)
         Event::create([
+            'organizer_id' => $organizer->id,
             'category_id' => $catTech->id,
             'title' => 'AI & Future: Unleash The Power',
             'description' => 'Jelajahi tren terkini dalam bidang Artificial Intelligence bersama pakar industri dari berbagai perusahaan teknologi top dunia.',
@@ -51,6 +61,7 @@ class DatabaseSeeder extends Seeder
 
         // Event 3 (Sesuai Template)
         Event::create([
+            'organizer_id' => $organizer->id,
             'category_id' => $catTech->id,
             'title' => 'Hackathon 2024: Ultimate Marathon',
             'description' => 'Tunjukkan kemampuan coding-mu dalam ajang kompetisi programming non-stop selama 48 jam.',
@@ -63,6 +74,7 @@ class DatabaseSeeder extends Seeder
 
         // Event 4
         Event::create([
+            'organizer_id' => $organizer->id,
             'category_id' => $catWorkshop->id,
             'title' => 'UI/UX Masterclass for Beginner',
             'description' => 'Belajar merancang antarmuka aplikasi yang user-friendly dari nol bersama UI/UX Designer profesional.',
@@ -75,6 +87,7 @@ class DatabaseSeeder extends Seeder
 
         // Event 5
         Event::create([
+            'organizer_id' => $organizer->id,
             'category_id' => $catWorkshop->id,
             'title' => 'Seminar Technopreneur',
             'description' => 'Membangun bisnis rintisan (Startup) dari ide hingga mendapatkan pendanaan.',
@@ -87,6 +100,7 @@ class DatabaseSeeder extends Seeder
 
         // Event 6
         Event::create([
+            'organizer_id' => $organizer->id,
             'category_id' => $catTech->id,
             'title' => 'E-Sport U-Champ Tournament',
             'description' => 'Turnamen E-Sport antar Universitas se-Yogyakarta dengan total hadiah puluhan juta rupiah.',

@@ -130,5 +130,72 @@
                 </ul>
             </div>
         </div>
+
+        <!-- Ulasan Section -->
+        <div class="lg:col-span-3 mt-12">
+            <div class="bg-white rounded-[2.5rem] p-8 md:p-12 shadow-sm border border-slate-100">
+                <h3 class="text-3xl font-black mb-8 text-slate-800">Ulasan Pengunjung</h3>
+                
+                @auth
+                    @if(session('success'))
+                        <div class="bg-green-100 text-green-700 p-4 rounded-xl mb-6 font-bold">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
+                    <form action="{{ route('reviews.store') }}" method="POST" class="mb-12 bg-slate-50 p-6 rounded-3xl border border-slate-200">
+                        @csrf
+                        <input type="hidden" name="event_id" value="{{ $event->id }}">
+                        <h4 class="font-bold mb-4">Berikan Ulasan Anda</h4>
+                        
+                        <div class="mb-4">
+                            <label class="block text-sm font-bold text-slate-700 mb-2">Rating</label>
+                            <select name="rating" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none" required>
+                                <option value="5">⭐⭐⭐⭐⭐ (5/5) Sangat Bagus</option>
+                                <option value="4">⭐⭐⭐⭐ (4/5) Bagus</option>
+                                <option value="3">⭐⭐⭐ (3/5) Cukup</option>
+                                <option value="2">⭐⭐ (2/5) Kurang</option>
+                                <option value="1">⭐ (1/5) Sangat Kurang</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-sm font-bold text-slate-700 mb-2">Komentar</label>
+                            <textarea name="comment" rows="3" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Tulis pengalaman Anda mengenai acara ini..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="px-8 py-3 bg-indigo-600 text-white rounded-xl font-bold shadow-lg hover:bg-indigo-700 transition">Kirim Ulasan</button>
+                    </form>
+                @else
+                    <div class="mb-12 bg-indigo-50 p-6 rounded-3xl border border-indigo-100 text-center">
+                        <p class="text-indigo-600 font-medium">Silakan <a href="{{ route('admin.login') }}" class="font-bold underline">Login</a> untuk memberikan ulasan.</p>
+                    </div>
+                @endauth
+
+                <div class="space-y-6">
+                    @forelse($reviews as $review)
+                        <div class="p-6 border border-slate-100 rounded-3xl flex gap-4">
+                            <div class="w-12 h-12 bg-slate-200 rounded-full flex-shrink-0 flex items-center justify-center font-bold text-slate-500 uppercase">
+                                {{ substr($review->user->name, 0, 2) }}
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2 mb-1">
+                                    <h5 class="font-bold text-lg">{{ $review->user->name }}</h5>
+                                    <span class="text-xs text-slate-400">• {{ $review->created_at->diffForHumans() }}</span>
+                                </div>
+                                <div class="text-yellow-400 text-sm mb-2">
+                                    {!! str_repeat('★', $review->rating) !!}{!! str_repeat('☆', 5 - $review->rating) !!}
+                                </div>
+                                @if($review->comment)
+                                    <p class="text-slate-600">{{ $review->comment }}</p>
+                                @endif
+                            </div>
+                        </div>
+                    @empty
+                        <p class="text-slate-500 text-center py-8">Belum ada ulasan untuk acara ini. Jadilah yang pertama!</p>
+                    @endforelse
+                </div>
+            </div>
+        </div>
     </main>
 @endsection
