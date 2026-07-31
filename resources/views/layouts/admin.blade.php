@@ -30,12 +30,14 @@
                 Transaksi
             </a>
             
+            @if(auth()->check() && auth()->user()->role === 'superadmin')
             <a href="{{ route('admin.categories.index') }}" class="flex items-center gap-3 px-4 py-3 {{ Request::is('admin/categories*') ? 'bg-indigo-800 text-white' : 'hover:bg-indigo-800 text-indigo-300 hover:text-white' }} rounded-xl font-bold transition">
                 Kelola Kategori
             </a>
             <a href="{{ route('admin.partners.index') }}" class="flex items-center gap-3 px-4 py-3 {{ Request::is('admin/partners*') ? 'bg-indigo-800 text-white' : 'hover:bg-indigo-800 text-indigo-300 hover:text-white' }} rounded-xl font-bold transition">
                 Kelola Partner
             </a>
+            @endif
         </nav>
 
         <div class="pt-6 border-t border-indigo-800">
@@ -51,6 +53,12 @@
 
     <!-- Main Content -->
     <main class="flex-1 p-10 overflow-y-auto">
+        @if(auth()->check() && auth()->user()->role === 'superadmin')
+            <div class="mb-6 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 font-bold rounded-lg shadow-sm" role="alert">
+                ⚠️ ANDA LOGIN SEBAGAI SUPERADMIN (Akses Penuh Ke Semua Data)
+            </div>
+        @endif
+        
         @yield('content')
     </main>
 

@@ -38,6 +38,26 @@ Route::middleware('auth')->group(function () {
     Route::post('/reviews', [\App\Http\Controllers\ReviewController::class, 'store'])->name('reviews.store');
 });
 
+// Route Khusus untuk Setup Database Otomatis di Hosting
+Route::get('/hosting-setup', function() {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate:fresh', ['--seed' => true, '--force' => true]);
+        return 'Database Berhasil Di-Setup! Silakan kembali ke halaman utama.';
+    } catch (\Exception $e) {
+        return 'Terjadi Kesalahan Setup: ' . $e->getMessage();
+    }
+});
+
+Route::get('/tambah-organizer', function() {
+    \App\Models\User::create([
+        'name' => 'HIMA Informatika',
+        'email' => 'hima@amikom.ac.id',
+        'password' => bcrypt('password'),
+        'role' => 'organizer'
+    ]);
+    return "SUKSES! Akun Organizer ke-2 (HIMA) berhasil dibuat!";
+});
+
 // Webhook Midtrans
 Route::post('/midtrans/callback', [\App\Http\Controllers\MidtransWebhookController::class, 'handle']);
 

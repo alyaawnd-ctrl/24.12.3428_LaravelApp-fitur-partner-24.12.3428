@@ -31,7 +31,7 @@ class CheckoutController extends Controller
 
         // 3. Generate Kode TRX Unik
         $orderId = 'TRX-' . time() . '-' . Str::random(5);
-        $totalPrice = $event->price == 0 ? 0 : $event->price + 5000; // Ditambah biaya layanan admin Rp 5.000 (kecuali gratis)
+        $totalPrice = $event->price;
 
         // 4. Cek Jika Acara Gratis (Bypass Midtrans)
         if ($totalPrice == 0) {

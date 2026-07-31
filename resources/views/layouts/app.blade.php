@@ -36,11 +36,21 @@
             <a href="#" class="hover:text-indigo-600 transition">Kategori</a>
             <a href="#" class="hover:text-indigo-600 transition">Tentang Kami</a>
         </div>
-        <!-- <div class="flex gap-3">
-            <button class="px-5 py-2.5 rounded-xl font-semibold hover:bg-slate-200 transition">Login</button>
-            <button
-                class="px-5 py-2.5 bg-indigo-600 text-white rounded-xl font-semibold shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition">Daftar</button>
-        </div> -->
+        <div class="flex items-center gap-4">
+            @auth
+                <a href="{{ route('admin.dashboard') }}" class="font-bold text-indigo-600 hover:underline">{{ Auth::user()->name }}</a>
+                <form action="{{ route('admin.logout') }}" method="POST" class="inline">
+                    @csrf
+                    <button type="submit" class="text-sm font-semibold text-red-500 hover:text-red-700">Logout</button>
+                </form>
+            @else
+                <a href="{{ route('google.login') }}" class="px-5 py-2.5 bg-indigo-600 text-white rounded-xl font-semibold shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition flex items-center gap-2">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24"><path fill="currentColor" d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.748L12.545,10.239z"/></svg>
+                    Lanjutkan dengan Google
+                </a>
+                <a href="{{ route('admin.login') }}" class="text-sm font-bold text-slate-500 hover:text-indigo-600 hidden md:block">Admin</a>
+            @endauth
+        </div>
     </nav>
 
     @yield('content')
